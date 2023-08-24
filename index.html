@@ -3,7 +3,6 @@
   Author: Dustin_Chen
   Email:  Dustin_Chen@compal.com or chuhpsdustin@gmail.com
 -->  
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,24 +23,35 @@
     }
 	
     /* 设置行间距为零 */
-        p {
-            margin: 0;
-            padding: 0;
-            line-height: 1.5; /* 调整行高，可以根据需要修改值 */
-        }
+    p {
+        margin: 0;
+        padding: 0;
+        line-height: 1.5; /* 调整行高，可以根据需要修改值 */
+    }
+
+    /* 按下按钮后的激活样式 */
+    .button.active {
+        background-color: yellow; /* 或其他你希望的颜色 */
+        color: black; /* 或其他适合的颜色 */
+    }
 </style>
 <body>
     <h1>Qcom fix band NV setting</h1>
-	<p style="margin: 0;">Author: Dustin_Chen, email: <a href="mailto:Dustin_Chen@compal.com" style="line-height: 1;">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com" style="line-height: 1;">chuhpsdustin@gmail.com</a></p>
-		
-	<p>● fix NR only => NV#80000 設 64，NV#10 設 71</p>
-	<p>● fix NR band => NV#74087 NR band preference</p>
-	<p>&nbsp &nbsp 要fix那些NR band，就將底下按鈕對應bit設為1，bits_1_64，bits_65_128，bits_129_192，bits_193_256，bits_257_320</p>
-	<p>&nbsp &nbsp ex: fix N41 底下按鈕 41 的bit舉為1 => 計算出 1099511627776 , 填到 bits_1_64</p>
-	<p>&nbsp &nbsp ex: fix N48 底下按鈕 48 的bit舉為1 => 計算出 140737488355328 , 填到 bits_1_64</p>
-	<p>&nbsp &nbsp ex: fix N78 =>(78-64=14)底下按鈕 14 的bit舉為1 => 計算出 8192 , 填到 bits_65_128</p>
-	<p>&nbsp &nbsp ex: fix N79 =>(79-64=15)底下按鈕 15 的bit舉為1 => 計算出 16384 , 填到 bits_65_128</p>
-<br>
+    <p style="margin: 0;">Author: Dustin_Chen, email: <a href="mailto:Dustin_Chen@compal.com" style="line-height: 1;">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com" style="line-height: 1;">chuhpsdustin@gmail.com</a></p>
+    <p>【操作說明】 Qcom fix mode_pref NR_only & fix NR band NV setting</p>    
+    <p>● fix NR only => NV#80000 設 64，NV#10 設 71</p>
+    <p>● fix NR band => NV#74087 NR band preference</p>
+    <p>&nbsp &nbsp 要fix哪些NR band，將底下64個按鈕分別對應不同band，按下變成黃色，bit設為1，用10進位填入</p>
+    <p>&nbsp &nbsp band 1~64 => 填入到 bits_1_64 欄位</p>
+    <p>&nbsp &nbsp band 65~128 => 填入到 bits_65_128 欄位</p>
+    <p>&nbsp &nbsp band 129~192 => 填入到 bits_129_192 欄位</p>
+    <p>&nbsp &nbsp band 193~256 => 填入到 bits_193_256 欄位</p>
+    <p>&nbsp &nbsp band 257~320 => 填入到 bits_257_320 欄位</p>
+    <p>&nbsp &nbsp &nbsp ex: fix N41 底下按鈕 41 的bit舉為1 => 計算出 1099511627776 , 填到 bits_1_64</p>
+    <p>&nbsp &nbsp &nbsp ex: fix N48 底下按鈕 48 的bit舉為1 => 計算出 140737488355328 , 填到 bits_1_64</p>
+    <p>&nbsp &nbsp &nbsp ex: fix N78 =>(78-64=14)底下按鈕 14 的bit舉為1 => 計算出 8192 , 填到 bits_65_128</p>
+    <p>&nbsp &nbsp &nbsp ex: fix N79 =>(79-64=15)底下按鈕 15 的bit舉為1 => 計算出 16384 , 填到 bits_65_128</p>
+    <br>
     <!-- 新增的表格 -->
     <table>
         <tr>
@@ -49,7 +59,7 @@
             <script>
                 for (let i = 64; i >= 1; i--) {
                     document.write(`
-                        <td><button id="button${i}" value="0" onclick="toggleValue(${i})">0</button></td>
+                        <td><button id="button${i}" class="button" value="0" onclick="toggleValue(${i})">0</button></td>
                     `);
                 }
             </script>
@@ -67,16 +77,29 @@
     </table>
 
     <!-- 輸入數字的標籤與輸入框 -->
-	<br>
+    <br>
     <label for="number" id="numberLabel">輸入數字：</label>
     <input type="text" id="number" oninput="handleNumberChange()">
     
     <!-- 顯示十六進位、十進位、二進位結果的區域 -->
     <p>十六進位：<span id="hexResult"></span></p>
-    <p>十進位：<span id="decimalResult"></span></p>
+    <p>十進位●：<span id="decimalResult"></span></p>
     <p>二進位：<span id="binaryResult"></span></p>
 
     <script>
+        const buttons = document.querySelectorAll(".button");
+
+        buttons.forEach(button => {
+            const buttonValue = button.value;
+            if (buttonValue === "1") {
+                button.classList.add("active");
+            }
+
+            button.addEventListener("click", () => {
+                button.classList.toggle("active");
+            });
+        });
+
         // 轉換函數，當按下轉換按鈕時觸發
         function convert() {
             const hexResultElement = document.getElementById("hexResult");
