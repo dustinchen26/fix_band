@@ -2,18 +2,28 @@
   Copyright © [2023] [Dustin_Chen]. All rights reserved.
   Author: Dustin_Chen
   Email:  Dustin_Chen@compal.com or chuhpsdustin@gmail.com
--->  
+-->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Qcom fix band NV setting</title>
+    <title>Qcom NV fix NR only & fix NR band</title>
 </head>
 <style>
+    body {
+        line-height: 1.4;
+        font-size: 15px;
+        font-family: Roboto, sans-serif;
+    }
+
     /* 去除表格邊框線 */
     table {
         border-collapse: collapse;
     }
-    table, th, td {
+
+    table,
+    th,
+    td {
         border: 0;
     }
 
@@ -21,37 +31,74 @@
     table td {
         text-align: center;
     }
-	
-    /* 设置行间距为零 */
+
+    /* 設置行間距為零 */
     p {
         margin: 0;
         padding: 0;
-        line-height: 1.5; /* 调整行高，可以根据需要修改值 */
+        line-height: 1.5;
+        /* 調整行高，可以根據需要修改值 */
     }
 
-    /* 按下按钮后的激活样式 */
+    /* 按下按鈕後的啟動樣式 */
     .button.active {
-        background-color: yellow; /* 或其他你希望的颜色 */
-        color: black; /* 或其他适合的颜色 */
+        background-color: yellow;
+        color: black;
+    }
+
+    /* Style for the input number boxes */
+    input[type="text"] {
+        width: 520px;
+        /* Adjust the width as needed */
+        padding: 0px;
+        margin: 4px;
+        line-height: 1;
+        box-sizing: border-box;
+        /* Include padding and border in the total width/height */
     }
 </style>
+
 <body>
-    <h1>Qcom fix band NV setting</h1>
-    <p style="margin: 0;">Author: Dustin_Chen, email: <a href="mailto:Dustin_Chen@compal.com" style="line-height: 1;">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com" style="line-height: 1;">chuhpsdustin@gmail.com</a></p>
-    <p>【操作說明】 Qcom fix mode_pref NR_only & fix NR band NV setting</p>    
-    <p>● fix NR only => NV#80000 設 64，NV#10 設 71</p>
-    <p>● fix NR band => NV#74087 NR band preference</p>
-    <p>&nbsp &nbsp 要fix哪些NR band，將底下64個按鈕分別對應不同band，按下變成黃色，bit設為1，用10進位填入</p>
-    <p>&nbsp &nbsp band 1~64 => 填入到 bits_1_64 欄位</p>
-    <p>&nbsp &nbsp band 65~128 => 填入到 bits_65_128 欄位</p>
-    <p>&nbsp &nbsp band 129~192 => 填入到 bits_129_192 欄位</p>
-    <p>&nbsp &nbsp band 193~256 => 填入到 bits_193_256 欄位</p>
-    <p>&nbsp &nbsp band 257~320 => 填入到 bits_257_320 欄位</p>
-    <p>&nbsp &nbsp &nbsp ex: fix N41 底下按鈕 41 的bit舉為1 => 計算出 1099511627776 , 填到 bits_1_64</p>
-    <p>&nbsp &nbsp &nbsp ex: fix N48 底下按鈕 48 的bit舉為1 => 計算出 140737488355328 , 填到 bits_1_64</p>
-    <p>&nbsp &nbsp &nbsp ex: fix N78 =>(78-64=14)底下按鈕 14 的bit舉為1 => 計算出 8192 , 填到 bits_65_128</p>
-    <p>&nbsp &nbsp &nbsp ex: fix N79 =>(79-64=15)底下按鈕 15 的bit舉為1 => 計算出 16384 , 填到 bits_65_128</p>
-    <br>
+    <h2>Qcom NV fix NR only & fix NR band</h2>
+    <p style="margin: 0;">Author: Dustin_Chen, email: <a href="mailto:Dustin_Chen@compal.com"
+            style="line-height: 1;">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com"
+            style="line-height: 1;">chuhpsdustin@gmail.com</a></p>
+    <ul>
+        <li><b>Qcom NV fix mode_pref="NR only"</b>
+            <ul>
+                <li>
+                    NR only => <span style="color: red;">NV#80000 設 64</span>
+                </li>
+                <li>
+                    NR only => <span style="color: red;">NV#10 設 71</span>
+                </li>
+            </ul>
+        </li>
+        <li><b>Qcom NV fix "NR band"</b>
+            <ul>
+                <li>
+                    NR band => <span style="color: red;">NV#74087</span>
+                </li>
+                <li>
+                    只有64個bit，band 1~64 填入到 bits_1_64 欄位，band 65~128 填入到 bits_65_128 欄位
+                </li>
+                <li>
+                    底下64個按鈕對應不同band，按下變成黃色，2進位bit設為1，計算出10進位
+                    <ul>
+                        <li><span style="color: blue;">fix N41</span> => 按下 41 按鈕，<span style="color: blue;">計算出
+                                1099511627776</span> , 填到 bits_1_64 </li>
+                        <li><span style="color: blue;">fix N48</span> => 按下 48 按鈕，<span style="color: blue;">計算出
+                                140737488355328</span> , 填到 bits_1_64 </li>
+                        <li><span style="color: blue;">fix N78</span> => 按下 78-64=14 按鈕，<span style="color: blue;">計算出
+                                8192</span> , 填到 bits_65_128 </li>
+                        <li><span style="color: blue;">fix N79</span> => 按下 79-64=15 按鈕，<span style="color: blue;">計算出
+                                16384</span> , 填到 bits_65_128 </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
     <!-- 新增的表格 -->
     <table>
         <tr>
@@ -78,9 +125,10 @@
 
     <!-- 輸入數字的標籤與輸入框 -->
     <br>
-    <label for="number" id="numberLabel">輸入數字：</label>
-    <input type="text" id="number" oninput="handleNumberChange()">
-    
+    <!-- Add a style attribute to hide the label and input box -->
+    <label for="number" id="numberLabel" style="display: none;">輸入數字：</label>
+    <input type="text" id="number" oninput="handleNumberChange()" style="display: none;">
+
     <!-- 顯示十六進位、十進位、二進位結果的區域 -->
     <p>十六進位：<span id="hexResult"></span></p>
     <p>十進位●：<span id="decimalResult"></span></p>
@@ -197,7 +245,7 @@
                 } else {
                     digit = BigInt(digitMap.indexOf(numString[i]));
                 }
-                
+
                 if (digit === -1n || digit >= base) {
                     throw new Error("Invalid digit in number");
                 }
@@ -212,4 +260,5 @@
         }
     </script>
 </body>
+
 </html>
